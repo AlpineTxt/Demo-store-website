@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Orders | XYZ STORE</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <style>
+        .orders-page {
+            padding: 8rem 0;
+            min-height: 80vh;
+        }
+        .order-card {
+            border: 1px solid var(--border);
+            margin-bottom: 2rem;
+            padding: 2rem;
+            animation: fadeIn 0.5s ease;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        .order-id {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+        .order-item {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        .order-item img {
+            width: 60px;
+            height: 70px;
+            object-fit: cover;
+            background: #f3f4f6;
+        }
+        .order-item-info h4 {
+            font-size: 1rem;
+            margin-bottom: 0.2rem;
+        }
+        .order-item-info p {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+        .order-status {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            background: #f3f4f6;
+            padding: 0.4rem 0.8rem;
+            font-weight: 600;
+        }
+        .empty-orders {
+            text-align: center;
+            padding: 4rem 0;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="container nav-container">
+            <a href="index.html" class="logo" style="text-decoration: none; color: inherit;">XYZ STORE</a>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="collection.html">Collection</a></li>
+                <li><a href="orders.html" class="active">Orders</a></li>
+            </ul>
+            <div class="nav-actions">
+                <a href="cart.html" class="cart-icon" id="cartBtn" style="text-decoration: none; color: inherit;">
+                    <span>CART</span>
+                    <span id="cartCount">(0)</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container orders-page">
+        <h1 style="font-family: 'Playfair Display'; font-size: 3rem; margin-bottom: 3rem; text-align: center;">Order History</h1>
+        
+        <div id="orderList">
+            <!-- Dynamic Orders -->
+        </div>
+
+        <div id="noOrders" class="empty-orders" style="display: none;">
+            <p style="font-size: 1.1rem; margin-bottom: 2rem;">You haven't placed any orders yet.</p>
+            <a href="collection.html" class="btn btn-primary">Start Shopping</a>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container" style="text-align: center; padding: 4rem 0; border-top: 1px solid var(--border);">
+            <p class="copyright">&copy; 2026 XYZ Store. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const orders = JSON.parse(localStorage.getItem('xyz_orders')) || [];
+            const orderList = document.getElementById('orderList');
+            const noOrders = document.getElementById('noOrders');
+
+            if (orders.length === 0) {
+                noOrders.style.display = 'block';
+                return;
+            }
+
+            orderList.innerHTML = orders.map(order => `
+                <div class="order-card">
+                    <div class="order-header">
+                        <div>
+                            <span class="order-id">Order #${order.id.toString().slice(-6)}</span>
+                            <p style="font-size: 0.9rem; margin-top: 0.3rem;">Placed on ${order.date}</p>
+                        </div>
+                        <span class="order-status">Preparing for Dispatch</span>
+                    </div>
+                    <div class="order-items">
+                        ${order.items.map(item => `
+                            <div class="order-item">
+                                <img src="${item.img}" alt="${item.name}">
+                                <div class="order-item-info">
+                                    <h4>${item.name}</h4>
+                                    <p>Qty: ${item.quantity} &bull; $${item.price}</p>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                    <div style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center;">
+                        <span style="font-weight: 600;">Total Paid</span>
+                        <span style="font-size: 1.2rem; font-weight: 700;">$${order.total.toFixed(2)}</span>
+                    </div>
+                </div>
+            `).join('');
+        });
+    </script>
+</body>
+</html>

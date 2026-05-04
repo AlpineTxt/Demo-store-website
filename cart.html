@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Cart | XYZ STORE</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <style>
+        .cart-page {
+            padding: 8rem 0;
+            min-height: 80vh;
+        }
+        .cart-title {
+            font-size: 3rem;
+            margin-bottom: 4rem;
+            text-align: center;
+        }
+        .cart-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 4rem;
+        }
+        .cart-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .cart-table th {
+            text-align: left;
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.8rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+        }
+        .cart-table td {
+            padding: 2.5rem 0;
+            border-bottom: 1px solid var(--border);
+        }
+        .cart-product {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+        .cart-product img {
+            width: 100px;
+            height: 120px;
+            object-fit: cover;
+            background: #f3f4f6;
+        }
+        .cart-product h4 {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+        .summary-card {
+            background: var(--bg-secondary);
+            padding: 3rem;
+            position: sticky;
+            top: 2rem;
+        }
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+            font-size: 1rem;
+        }
+        .summary-total {
+            border-top: 1px solid var(--border);
+            margin-top: 2rem;
+            padding-top: 2rem;
+            font-weight: 700;
+            font-size: 1.5rem;
+        }
+        .checkout-btn {
+            width: 100%;
+            margin-top: 2rem;
+        }
+        .remove-item {
+            cursor: pointer;
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            text-decoration: underline;
+        }
+        @media (max-width: 968px) {
+            .cart-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="container nav-container">
+            <a href="index.html" class="logo" style="text-decoration: none; color: inherit;">XYZ STORE</a>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="collection.html">Collection</a></li>
+                <li><a href="orders.html">Orders</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container cart-page">
+        <h1 class="cart-title">Your Cart</h1>
+        
+        <div id="cartDisplay" class="cart-grid">
+            <div class="cart-main">
+                <table class="cart-table">
+                    <thead>
+                        <tr>
+                            <th>Product</th>
+                            <th>Quantity</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody id="cartTableBody">
+                        <!-- Items -->
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="cart-summary">
+                <div class="summary-card">
+                    <h3>Order Summary</h3>
+                    <div class="summary-row" style="margin-top: 2rem;">
+                        <span>Subtotal</span>
+                        <span id="summarySubtotal">$0.00</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Shipping</span>
+                        <span>Complimentary</span>
+                    </div>
+                    <div class="summary-total">
+                        <span>Total</span>
+                        <span id="summaryTotal">$0.00</span>
+                    </div>
+                    
+                    <div style="margin-top: 2rem; border-top: 1px solid var(--border); padding-top: 1.5rem;">
+                        <label style="display: flex; align-items: flex-start; gap: 0.8rem; font-size: 0.85rem; color: var(--text-secondary); cursor: pointer; margin-bottom: 1rem;">
+                            <input type="checkbox" id="shipCheck" checked style="margin-top: 3px;">
+                            <span>I agree to the <a href="policies.html#terms" style="color: var(--text-primary);">Shipping Policy</a>.</span>
+                        </label>
+                        <label style="display: flex; align-items: flex-start; gap: 0.8rem; font-size: 0.85rem; color: var(--text-secondary); cursor: pointer;">
+                            <input type="checkbox" id="returnCheck" checked style="margin-top: 3px;">
+                            <span>I accept the <a href="policies.html#returns" style="color: var(--text-primary);">Return Policy</a>.</span>
+                        </label>
+                    </div>
+
+                    <button id="finalOrderBtn" class="btn btn-primary checkout-btn">Confirm Order</button>
+                    <p id="policyError" style="color: #b91c1c; font-size: 0.7rem; margin-top: 0.5rem; display: none; text-align: center;">
+                        Please accept both policies to proceed.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div id="emptyCartMsg" style="display: none; text-align: center; padding: 4rem 0;">
+            <p style="font-size: 1.2rem; margin-bottom: 2rem;">Your cart is currently empty.</p>
+            <a href="index.html#shop" class="btn btn-primary">Return to Shop</a>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p class="copyright" style="text-align: center; padding: 4rem 0; border-top: 1px solid var(--border);">
+                &copy; 2026 XYZ Store. All rights reserved.
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            let cart = JSON.parse(localStorage.getItem('xyz_cart')) || [];
+            const tableBody = document.getElementById('cartTableBody');
+            const subtotalEl = document.getElementById('summarySubtotal');
+            const totalEl = document.getElementById('summaryTotal');
+            const cartDisplay = document.getElementById('cartDisplay');
+            const emptyMsg = document.getElementById('emptyCartMsg');
+
+            const renderCart = () => {
+                if (cart.length === 0) {
+                    cartDisplay.style.display = 'none';
+                    emptyMsg.style.display = 'block';
+                    return;
+                }
+
+                tableBody.innerHTML = cart.map(item => `
+                    <tr>
+                        <td>
+                            <div class="cart-product">
+                                <img src="${item.img}" alt="${item.name}">
+                                <div>
+                                    <h4>${item.name}</h4>
+                                    <span class="remove-item" onclick="removeItem(${item.id})">Remove</span>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="qty-control">
+                                <button onclick="updateQty(${item.id}, -1)">-</button>
+                                <span>${item.quantity}</span>
+                                <button onclick="updateQty(${item.id}, 1)">+</button>
+                            </div>
+                        </td>
+                        <td class="price">$${(item.price * item.quantity).toFixed(2)}</td>
+                    </tr>
+                `).join('');
+
+                const total = cart.reduce((acc, item) => acc + (item.price * item.quantity), 0);
+                subtotalEl.textContent = `$${total.toFixed(2)}`;
+                totalEl.textContent = `$${total.toFixed(2)}`;
+            };
+
+            window.updateQty = (id, delta) => {
+                const item = cart.find(i => i.id === id);
+                if (item) {
+                    item.quantity += delta;
+                    if (item.quantity <= 0) removeItem(id);
+                    else saveAndRender();
+                }
+            };
+
+            window.removeItem = (id) => {
+                cart = cart.filter(i => i.id !== id);
+                saveAndRender();
+            };
+
+            const saveAndRender = () => {
+                localStorage.setItem('xyz_cart', JSON.stringify(cart));
+                renderCart();
+            };
+
+            const shipCheck = document.getElementById('shipCheck');
+            const returnCheck = document.getElementById('returnCheck');
+            const policyError = document.getElementById('policyError');
+            const finalOrderBtn = document.getElementById('finalOrderBtn');
+
+            const validatePolicies = () => {
+                if (shipCheck.checked && returnCheck.checked) {
+                    policyError.style.display = 'none';
+                    return true;
+                } else {
+                    policyError.style.display = 'block';
+                    return false;
+                }
+            };
+
+            finalOrderBtn.addEventListener('click', () => {
+                if (validatePolicies()) {
+                    // Save to Order History
+                    const history = JSON.parse(localStorage.getItem('xyz_orders')) || [];
+                    const newOrder = {
+                        id: Date.now(),
+                        date: new Date().toLocaleDateString(),
+                        items: [...cart],
+                        total: cart.reduce((acc, item) => acc + (item.price * item.quantity), 0)
+                    };
+                    history.unshift(newOrder); // Newest first
+                    localStorage.setItem('xyz_orders', JSON.stringify(history));
+
+                    localStorage.removeItem('xyz_cart');
+                    window.location.href = 'success.html';
+                }
+            });
+
+            [shipCheck, returnCheck].forEach(check => {
+                check.addEventListener('change', validatePolicies);
+            });
+
+            renderCart();
+        });
+    </script>
+</body>
+</html>
