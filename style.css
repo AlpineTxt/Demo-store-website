@@ -20,6 +20,7 @@ body {
     color: var(--text-primary);
     font-family: 'Inter', sans-serif;
     line-height: 1.5;
+    overflow-x: hidden;
 }
 
 h1, h2, h3, .logo {
@@ -37,6 +38,9 @@ h1, h2, h3, .logo {
 nav {
     padding: 2rem 0;
     border-bottom: 1px solid var(--border);
+    background: white;
+    position: relative;
+    z-index: 1000;
 }
 
 .nav-container {
@@ -82,6 +86,24 @@ nav {
     font-size: 0.9rem;
 }
 
+.menu-toggle {
+    display: none;
+    flex-direction: column;
+    gap: 6px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 10px;
+}
+
+.menu-toggle span {
+    display: block;
+    width: 25px;
+    height: 2px;
+    background: var(--text-primary);
+    transition: var(--transition);
+}
+
 /* Hero - Clean & Spaced */
 .hero {
     padding: 12rem 0;
@@ -100,7 +122,7 @@ nav {
 .hero h1 {
     font-size: clamp(3.5rem, 8vw, 6rem);
     margin-bottom: 2rem;
-    line-height: 1;
+    line-height: 1.1;
 }
 
 .hero p {
@@ -118,12 +140,14 @@ nav {
 
 .btn {
     padding: 1.25rem 3rem;
-    border-radius: 0; /* Square edges for professional look */
+    border-radius: 0;
     font-size: 0.9rem;
     text-transform: uppercase;
     letter-spacing: 0.1em;
     transition: var(--transition);
     cursor: pointer;
+    display: inline-block;
+    text-decoration: none;
 }
 
 .btn-primary {
@@ -178,7 +202,6 @@ nav {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    mix-blend-mode: multiply;
 }
 
 .card-overlay {
@@ -202,6 +225,7 @@ nav {
     font-weight: 600;
     text-transform: uppercase;
     box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    cursor: pointer;
 }
 
 .product-details {
@@ -245,23 +269,134 @@ nav {
     outline: none;
 }
 
-/* Cart Sidebar - Refined */
-.cart-sidebar {
-    position: fixed;
-    top: 0;
-    right: -500px;
-    width: 500px;
-    height: 100vh;
+/* Footer */
+footer {
+    padding: 6rem 0;
     background: white;
-    z-index: 2000;
-    padding: 4rem;
-    box-shadow: -50px 0 100px rgba(0,0,0,0.05);
-    transition: var(--transition);
+    border-top: 1px solid var(--border);
 }
 
-.cart-sidebar.active {
-    right: 0;
+.footer-grid {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 4rem;
 }
 
-/* Remove custom cursor from script or hide here */
-.cursor-follower { display: none !important; }
+.footer-nav {
+    display: flex;
+    gap: 3rem;
+}
+
+.footer-nav a {
+    text-decoration: none;
+    color: var(--text-secondary);
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+.copyright {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    text-align: center;
+}
+
+/* Media Queries for Mobile Optimization */
+@media (max-width: 992px) {
+    .nav-links {
+        gap: 2rem;
+    }
+    
+    .product-grid {
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 2rem;
+    }
+}
+
+@media (max-width: 768px) {
+    /* Navigation Mobile */
+    .menu-toggle {
+        display: flex;
+    }
+
+    .nav-links {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh;
+        background: white;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 3rem;
+        transform: translateY(-100%);
+        transition: var(--transition);
+        z-index: 999;
+    }
+
+    .nav-links.active {
+        transform: translateY(0);
+    }
+
+    .nav-links a {
+        font-size: 1.5rem;
+    }
+
+    /* Hero Mobile */
+    .hero {
+        padding: 8rem 0;
+    }
+
+    .hero h1 {
+        font-size: 3.5rem;
+    }
+
+    .hero-btns {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .btn {
+        width: 100%;
+        max-width: 300px;
+    }
+
+    /* Sections Mobile */
+    .section-header {
+        margin-bottom: 4rem;
+    }
+
+    .section-header h2 {
+        font-size: 2.25rem;
+    }
+
+    .product-visual {
+        height: 400px;
+    }
+
+    .card-overlay {
+        opacity: 1;
+        bottom: 1rem;
+        left: 1rem;
+        right: 1rem;
+    }
+
+    .contact-wrapper {
+        grid-template-columns: 1fr;
+        gap: 4rem;
+    }
+
+    .footer-grid {
+        flex-direction: column;
+        gap: 3rem;
+        text-align: center;
+        align-items: center;
+    }
+
+    .footer-nav {
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+}
