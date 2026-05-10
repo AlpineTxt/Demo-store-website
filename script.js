@@ -10,6 +10,33 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
+    // Mobile Menu Toggle Logic
+    const menuToggle = document.getElementById('menuToggle');
+    const navLinks = document.getElementById('navLinks');
+
+    if (menuToggle && navLinks) {
+        menuToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            menuToggle.classList.toggle('active');
+            
+            // Prevent body scroll when menu is open
+            if (navLinks.classList.contains('active')) {
+                document.body.style.overflow = 'hidden';
+            } else {
+                document.body.style.overflow = 'auto';
+            }
+        });
+
+        // Close menu when a link is clicked
+        navLinks.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+                menuToggle.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            });
+        });
+    }
+
     // Use Event Delegation for 'Add to Cart'
     document.addEventListener('click', (e) => {
         if (e.target.classList.contains('add-to-cart')) {
@@ -57,7 +84,7 @@ document.addEventListener('DOMContentLoaded', () => {
         setTimeout(() => toast.classList.remove('active'), 3000);
     };
 
-    // Helper Styles for Toast
+    // Helper Styles for Toast & Animations
     const style = document.createElement('style');
     style.innerHTML = `
         .toast {
@@ -80,23 +107,6 @@ document.addEventListener('DOMContentLoaded', () => {
             transform: translateX(-50%) translateY(0);
             opacity: 1;
         }
-        .qty-control {
-            display: flex;
-            align-items: center;
-            gap: 1.5rem;
-        }
-        .qty-control button {
-            background: none;
-            border: 1px solid #e5e7eb;
-            width: 32px;
-            height: 32px;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-        .qty-control button:hover {
-            background: #000;
-            color: #fff;
-        }
         .btn-added {
             background: #064e3b !important;
             color: #fff !important;
@@ -106,6 +116,14 @@ document.addEventListener('DOMContentLoaded', () => {
             0% { transform: scale(1); }
             50% { transform: scale(1.05); }
             100% { transform: scale(1); }
+        }
+        
+        /* Mobile Menu Animation */
+        .menu-toggle.active span:nth-child(1) {
+            transform: translateY(4px) rotate(45deg);
+        }
+        .menu-toggle.active span:nth-child(2) {
+            transform: translateY(-4px) rotate(-45deg);
         }
     `;
     document.head.appendChild(style);
